@@ -1,6 +1,7 @@
 # PURP: - TO HANDLE DRIVE INFO LOGIC FOR -d and -drv arguments
 from os import listdir, walk, path
 from constants import *   
+from helper import format_size
 import logging
 import platform
 import shutil
@@ -21,7 +22,7 @@ def get_drive_info():
         if bit & bitmask:
             drive_letter = '%s:' % chr(65 + i)
             drive_type = ctypes.windll.kernel32.GetDriveTypeW('%s\\' % drive_letter)
-            logging.debug("Drive %s\\ , Type:%s type Detected." % drive_letter, drive_type)
+            logging.debug("Drive %s\\ , Type:%s type Detected." % (drive_letter, drive_type))
             result.append((drive_letter, drive_type))
     return result
 
@@ -62,9 +63,9 @@ def get_disk_info(drive):
         logging.critical("Cannot get drive's storage info")
         return -1, -1, -1
     try:
-        total = total // (1024.0 ** 3)
-        used = used // (1024.0 ** 3)
-        free = free // (1024.0 ** 3)
+        total = format_size(total)
+        used = format_size(used)
+        free = format_size(free)
     except Exception:
         logging.error(COMP_ERROR)
         return -1, -1, -1

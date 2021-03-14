@@ -23,7 +23,7 @@ parser.add_argument(T, help='list all the types of files of the machine with add
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
-args = parser.parse_args(args=['--drv', '/Volumes/Macintosh HD/'])
+args = parser.parse_args(args=['-d', 'D'])
 
 from drive_dump import dump_drives, dump_drive
 from info_logger import log_drive_info

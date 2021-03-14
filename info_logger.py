@@ -13,8 +13,8 @@ def log_drive_info(drive_name, num_of_files_and_dirs, storage):
     logging.info('Drive name / letter: %s' % drive_name)
     logging.info('Total number of directories: %s' % f'{num_of_dirs:,}')
     logging.info('Total number of files: %s' % f'{num_of_files:,}')
-    logging.info('Total allocated: %s GiB' % f'{allocated:,}')
-    logging.info('Total used: %s GiB' % f'{used:,}')
-    logging.info('Total free storage: %s GiB' % f'{free:,}')
+    logging.info('Total allocated: %s' % allocated)
+    logging.info('Total used: %s' % used)
+    logging.info('Total free storage: %s' % free)
 
 
