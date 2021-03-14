@@ -26,7 +26,7 @@ logging.debug("Args Added")
 args = parser.parse_args(args=['--drv', '/Volumes/Macintosh HD/'])
 
 from drive_dump import dump_drives, dump_drive
-from formats import log_drive_info
+from info_logger import log_drive_info
 
 # MARK:- Begin Args Parameters Handeling
 logging.debug("Beginning Args Handeling...")
