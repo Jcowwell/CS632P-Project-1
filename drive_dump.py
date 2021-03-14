@@ -22,7 +22,7 @@ def get_drive_info():
         if bit & bitmask:
             drive_letter = '%s:' % chr(65 + i)
             drive_type = ctypes.windll.kernel32.GetDriveTypeW('%s\\' % drive_letter)
-            logging.debug("Drive %s\\ , Type:%s type Detected." % (drive_letter, drive_type))
+            logging.debug("Drive %s Detected." % drive_letter)
             result.append((drive_letter, drive_type))
     return result
 
