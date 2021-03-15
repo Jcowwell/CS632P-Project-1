@@ -18,3 +18,12 @@ def log_drive_info(drive_name, num_of_files_and_dirs, storage):
     logging.info('Total free storage: %s' % free)
 
 
+def log_folders(folders):
+    directories, total_storage = folders
+    _, total_used , _ = total_storage
+    for folder in directories:
+        folder_name, num_of_files, storage = folder
+        _, used , _ = storage
+        log_folder_info(folder_name, num_of_files, used) # Implement function
+    log_total_folder_info(total_used) # Implement function
+
