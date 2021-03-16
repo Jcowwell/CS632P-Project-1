@@ -1,15 +1,16 @@
 # PURP: - TO HANLDE INITAL LOGGING AND ARGS LOGIC. 
 import logging
-import argparse
-from drive_dump import dump_drives, dump_drive
-from folder_dump import dump_folder, dump_folders
-from info_logger import log_drive_info, log_folders, log_folder
 from constants import D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
-
 
 # MARK:- Logger Initilized
 logging.basicConfig(filename='dump.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
 logging.debug("Logging Initilized")
+
+import argparse
+from drive_dump import dump_drives, dump_drive
+from folder_dump import dump_folder, dump_folders
+from info_logger import log_drive_info, log_folders, log_folder
+
 
 # MARK:- Set up Argparse paramaeters
 parser = argparse.ArgumentParser()
