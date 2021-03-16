@@ -1,3 +1,7 @@
 dump.log
 __pycache__/
 .vscode/
+constants.pyc
+drive_dump.pyc
+.DS_Store
+helper.pyc
