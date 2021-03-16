@@ -33,13 +33,16 @@ logging.debug("Beginning Args Handeling...")
 if args.d:
     logging.debug('-d argument was passed')
     logging.debug("Dumping Local Computer Drives info")
-    try:
-        drives = dump_drives()
+
+    drives = dump_drives()
+    if drives is None:
+        logging.critical('Program was unable to process request')
+        logging.error("Could Not Dump Drive Info")
+    else: 
         for drive in drives:
             drive_name, num_of_files_and_dirs, storage = drive
             log_drive_info(drive_name, num_of_files_and_dirs, storage)
-    except Exception:
-        logging.error("Could Not Dump Drive Info")
+       
 
 # MARK:- -drv args
 if args.drv:
