@@ -1,4 +1,4 @@
-# PURP: - TO HANDLE DRIVE INFO LOGIC FOR -d and -drv arguments
+# PURP: - TO HANDLE DRIVE INFO LOGIC FOR -d and --drv arguments
 from os import listdir, walk, path
 from constants import *   
 from helper import format_size
@@ -108,7 +108,7 @@ def dump_drive(drive_path):
             drive_name = path.basename(path.dirname(drive_path)) # Because I'm a lazy bum who doesn;t wnat to right a slash preflix stripper function. 
             return (drive_name, get_folder_and_files_total(drive_path), get_disk_info(drive_path))
         else:
-            logging.critical('%s is not a valid path' % drive_path)
+            logging.warning('%s is not a valid path' % drive_path)
     except Exception:
         logging.critical(INDIE_CRITICAL)
     return None
