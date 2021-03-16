@@ -124,7 +124,7 @@ def dump_drives():
 def dump_drive(drive_path):
     try:
         if path.ismount(drive_path):
-            drive_name = path.basename(path.dirname(drive_path)) # Because I'm a lazy bum who doesn;t wnat to right a slash preflix stripper function. 
+            drive_name = path.basename(path.dirname(drive_path)) # Because I'm a lazy bum who doesn't wnat to right a slash preflix stripper function. 
             return (drive_name, get_folder_and_files_total(drive_path), get_disk_info(drive_path))
         else:
             logging.warning('%s is not a valid path' % drive_path)
