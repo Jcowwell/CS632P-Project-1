@@ -46,7 +46,7 @@ def get_folder_size(folder):
     # if valid get info in a try catch
     # if an excpetion occurs return none
 def dump_folders(drive):
-    if os.path.ismount(drive):
+    if path.ismount(drive):
         #drive_name = path.basename(path.dirname(drive))
         try:
             folders = []
@@ -69,16 +69,14 @@ def dump_folders(drive):
 
 
 # --fld master method
-    # Checking if valid path if not return none
-    # if valid get info in a try catch
-    # if an excpetion occurs return none
+    # returns ((dirname, num_of_files),(allocated, used, free))
 def dump_folder(folder):
-    if os.path.isdir(folder):
+    if path.isdir(folder):
         try:
             
             get_folder =  get_folder_info(folder)
             get_folder += (get_disk_info(folder),)
-            return (get_folder)
+            return get_folder
             
 
         except Exception:
@@ -86,7 +84,6 @@ def dump_folder(folder):
             return None
     else:
         return None
-    return
 
 
 
