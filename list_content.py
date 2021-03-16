@@ -2,7 +2,8 @@
 import logging
 import argparse
 from drive_dump import dump_drives, dump_drive
-from info_logger import log_drive_info
+from folder_dump import dump_folder, dump_folders
+from info_logger import log_drive_info, log_folders, log_folder
 from constants import D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
 
 
@@ -57,11 +58,27 @@ if args.drv:
 
 # MARK:- -l args
 if args.l:
-    logging.debug('-d argument was passed')
+    logging.debug('-l argument was passed')
+    logging.debug('Dumping the info of %s drive' % args.l )
+
+    folders = dump_folders(args.l)
+    if folders is None:
+        logging.critical("The program was unable to obtain folder info ")
+        logging.error("Could Not Dump folder info")
+    else:
+        log_folders(folders)
 
 # MARK:- --fld args
-if args.drv:
+if args.fld:
     logging.debug('--fld argument was passed')
+    logging.debug('Dumping the info of %s folder' % args.fld)
+
+    folder = dump_folder(args.fld)
+    if folder is None:
+        logging.critical('The program was unable to obtain info from folder')
+        logging.error('Could not dump folder info')   
+    else:
+         log_folder(folder)
 
 # MARK:- -f args
 if args.f:
