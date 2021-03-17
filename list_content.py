@@ -1,8 +1,8 @@
 # PURP: - TO HANLDE INITAL LOGGING AND ARGS LOGIC. 
 import logging
 import argparse
-from drive_dump import dump_drives, dump_drive
-from info_logger import log_drive_info
+from drive_dump import dump_drives, dump_drive, get_types_storage
+from info_logger import log_drive_info, log_fileTypeSize_info
 from constants import D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
 
 
@@ -71,7 +71,14 @@ if args.fil:
 # MARK:- -t args
 if args.t:
     logging.debug('-t argument was passed')
+    logging.debug("list all type and the total storage")
+    file, size = get_types_storage()
+    log_fileTypeSize_info(file, size)
+
 
 # MARK:- -typ args
 if args.typ:
     logging.debug('--typ argument was passed')
+    logging.debug("list all type and the total storage")
+    file, size = get_types_storage()
+    log_fileTypeSize_info(file, size)
