@@ -9,7 +9,8 @@ logging.debug("Logging Initilized")
 import argparse
 from drive_dump import dump_drives, dump_drive
 from folder_dump import dump_folder, dump_folders
-from info_logger import log_drive_info, log_folders, log_folder
+from file_dump import dump_files, dump_file
+from info_logger import log_drives, log_drive, log_folders, log_folder, log_files, log_file
 
 
 # MARK:- Set up Argparse paramaeters
@@ -27,7 +28,8 @@ parser.add_argument(T, help='list all the types of files of the machine with add
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
-args = parser.parse_args(args=['--drv', '/Volumes/Macintosh HD/'])
+# args = parser.parse_args(args=['--fld', ''])
+args = parser.parse_args(args=['--fld', '/Volumes/Macintosh HD/Application'])
 
 # MARK:- Begin Args Parameters Handeling
 logging.debug("Beginning Args Handeling...")
@@ -41,9 +43,7 @@ if args.d:
         logging.critical('Program was unable to process request')
         logging.error("Could Not Dump Drive Info")
     else: 
-        for drive in drives:
-            drive_name, num_of_files_and_dirs, storage = drive
-            log_drive_info(drive_name, num_of_files_and_dirs, storage)
+        log_drives(drives)
        
 
 # MARK:- -drv args
@@ -54,8 +54,7 @@ if args.drv:
     if drive is None:
         logging.critical('Program was unable to process %s path' % args.drv)
     else:
-        drive_name, num_of_files_and_dirs, storage = drive
-        log_drive_info(drive_name, num_of_files_and_dirs, storage)
+        log_drive(drive)
 
 # MARK:- -l args
 if args.l:
@@ -76,18 +75,31 @@ if args.fld:
 
     folder = dump_folder(args.fld)
     if folder is None:
-        logging.critical('The program was unable to obtain info from folder')
-        logging.error('Could not dump folder info')   
+        logging.critical('The program was unable to obtain info from %s' % args.fld)  
     else:
          log_folder(folder)
 
-# MARK:- -f args
+# MARK:- -f args CHECKED
 if args.f:
     logging.debug('-f argument was passed')
+    logging.debug("Dumping the info of this machine's files...Hold your butcheeks")
+    files = dump_files()
+    if files is None:
+        logging.critical('The program was unable to obtain files info from this machine')
+        logging.error("Could not dump this machine's file's info") 
+    else:
+        log_files(files)
 
 # MARK:- --fil args
 if args.fil:
     logging.debug('--fil argument was passed')
+    logging.debug('Dumping the info of %s' % args.fil)
+    file = dump_file(args.fil)
+    if file is None:
+        logging.critical('The program was unable to obtain info from %s' % args.fil)
+    else:
+        log_file(file)
+        
 
 # MARK:- -t args
 if args.t:

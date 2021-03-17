@@ -1,3 +1,0 @@
-2021-03-16 11:46:07,373 filename: /Users/levi/Documents/RDB/ToDesk.sqlite, suffix: sqlite, filesize: 4096 Byte, modify_time: 1615885795.6183708, date: 2021-03-16 05:09:55
-2021-03-16 11:46:07,373 filename: /Users/levi/Documents/RDB/ToDesk.sqlite-shm, suffix: sqlite-shm, filesize: 32768 Byte, modify_time: 1615885821.7588072, date: 2021-03-16 05:10:21
-2021-03-16 11:46:07,373 filename: /Users/levi/Documents/RDB/ToDesk.sqlite-wal, suffix: sqlite-wal, filesize: 28872 Byte, modify_time: 1615885795.690232, date: 2021-03-16 05:09:55

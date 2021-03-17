@@ -67,10 +67,10 @@ def get_disk_info(drive):
         total = format_size(total)
         used = format_size(used)
         free = format_size(free)
+        return total, used, free
     except Exception:
         logging.error(COMP_ERROR)
-        return None, None, None
-    return total, used, free
+    return None, None, None
 
 def macos_dump():
     logging.debug(MACOS_DETECTED)
@@ -82,7 +82,7 @@ def macos_dump():
         return drive_info
     except Exception:
         logging.critical(MACOS_CRITICAL)
-        return None
+    return None
 
 def linux_dump():
     logging.debug(LINUX_DETECTED)
@@ -103,7 +103,7 @@ def windows_dump():
             return drive_info
     except Exception:
         logging.critical(WINDOWS_CRITICAL)
-        return None
+    return None
 
 # Master Function that returns the info of all of a system's drives
 # For MacOS, the function reads all drives in /Volumes.
@@ -117,7 +117,7 @@ def dump_drives():
         return windows_dump()
     else:
         logging.critical(INDIE_CRITICAL)
-        return None
+    return None
 
 # Co-Master Function that returns the info of a inputted drive.
 # Platform Agnostic
