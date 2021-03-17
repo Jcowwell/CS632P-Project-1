@@ -8,8 +8,7 @@ import platform
 
 system = platform.system()
 
-# basic config
-logging.debug('Logging in format.py')
+logging.debug('Logging in file_dump.py')
 
 def get_file_size(file):
     '''
@@ -59,7 +58,6 @@ def get_files(drive):
                 if not path.islink(file_path):
                     files.append(get_file_details(file_path))
         return files
-        
     except Exception as e:
         logging.critical("Cannot get count of drive's folder files because: %s" % str(e))
     return None
@@ -69,7 +67,7 @@ def macos_dump():
     files = []
     try: 
         for drive in listdir('/Volumes/'):
-            logging.debug("Beginning Info Dumping of: %s" % drive)
+            logging.debug("Beginning File Dumping of: %s" % drive)
             files.extend(get_files('/Volumes/' + drive))
         return files
     except Exception:
@@ -111,6 +109,7 @@ def dump_files():
 def dump_file(file):
     try:
         if path.isfile(file):
+            logging.debug("Beginning Dumping of: %s" % file)
             return get_file_details(file)
         else:
             logging.warning('%s is not a valid file' % file)
