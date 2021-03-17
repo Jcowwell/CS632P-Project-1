@@ -1,5 +1,5 @@
 # NOTE: - To Handle Drive Info Logic For -d and --drv arguments
-
+# Author: - Jevon Cowell
 from os import listdir, walk, path
 from constants import DRIVE_FIXED, MAC_OS, MACOS_CRITICAL, MACOS_DETECTED, WINDOWS, WINDOWS_CRITICAL, WINDOWS_DETECTED, LINUX, LINUX_DETECTED, INDIE_CRITICAL   
 import logging

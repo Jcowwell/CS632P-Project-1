@@ -1,4 +1,6 @@
 # NOTE: - To Handle Drive Info Logic For -t and --typ arguments
+# Author: - Le Zhou
+
 import logging
 import platform
 from os import listdir, walk, path

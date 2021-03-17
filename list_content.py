@@ -31,7 +31,7 @@ parser.add_argument(T, help='list all the types of files of the machine with add
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
-# In-Code arg passing (For Testing)
+#NOTE: -  In-Code arg passing (For Testing)
 args = parser.parse_args(args=['-t', 'T'])
 
 # SECTION ARGS Handeling

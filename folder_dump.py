@@ -1,4 +1,6 @@
 # NOTE: - To Handle Drive Info Logic For -f and --fld arguments
+# Author: - Calvin Cheung
+
 import logging
 from os import walk, path
 from helper import get_file_size
