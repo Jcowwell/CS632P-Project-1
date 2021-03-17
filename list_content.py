@@ -1,8 +1,10 @@
-# PURP: - TO HANLDE INITAL LOGGING AND ARGS LOGIC. 
+# NOTE: - To Handle Initial Logging And Args Logic
+# REVIEW: - Check if Windows Systems are 100% compatible
+
 import logging
 from constants import D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
 
-# MARK:- Logger Initilized
+# NOTE: - Logger Initilized
 logging.basicConfig(filename='dump.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
 logging.debug("Logging Initilized")
 
@@ -13,8 +15,8 @@ from file_dump import dump_files, dump_file
 from file_type_dump import dump_file_types, dump_file_type
 from info_logger import log_drives, log_drive, log_folders, log_folder, log_files, log_file, log_file_types
 
-
-# MARK:- Set up Argparse paramaeters
+# SECTION ARGS Initilization
+# NOTE: - Set up Argparse paramaeters
 parser = argparse.ArgumentParser()
 parser.add_argument(D, help='list all the drives of the machine with additional info')
 parser.add_argument(DRV, help='list additional info of single drive')
@@ -29,13 +31,15 @@ parser.add_argument(T, help='list all the types of files of the machine with add
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
-# args = parser.parse_args(args=['--fld', ''])
-args = parser.parse_args(args=['--typ', '.txt'])
-# txt: 8621
+# In-Code arg passing (For Testing)
+args = parser.parse_args(args=['-t', 'T'])
 
-# MARK:- Begin Args Parameters Handeling
+# SECTION ARGS Handeling
+# NOTE: - Beginning Args Parameters Handeling
 logging.debug("Beginning Args Handeling...")
-# MARK:- -d args
+
+# SECTION -d and --drv
+# NOTE: - -d args
 if args.d:
     logging.debug('-d argument was passed')
     logging.debug("Dumping Local Computer Drives info")
@@ -48,7 +52,7 @@ if args.d:
         log_drives(drives)
        
 
-# MARK:- -drv args
+# NOTE: - -drv args
 if args.drv:
     logging.debug('-drv argument was passed')
     logging.debug("Dumping info of %s Drive" % args.drv)
@@ -58,7 +62,8 @@ if args.drv:
     else:
         log_drive(drive)
 
-# MARK:- -l args
+# SECTION -l and --fld
+# NOTE: - -l args
 if args.l:
     logging.debug('-l argument was passed')
     logging.debug('Dumping the info of %s drive' % args.l )
@@ -70,7 +75,7 @@ if args.l:
     else:
         log_folders(folders)
 
-# MARK:- --fld args
+# NOTE: - --fld args
 if args.fld:
     logging.debug('--fld argument was passed')
     logging.debug('Dumping the info of %s folder' % args.fld)
@@ -81,7 +86,8 @@ if args.fld:
     else:
          log_folder(folder)
 
-# MARK:- -f args CHECKED
+# SECTION -f and --fil
+# NOTE: - -f args
 if args.f:
     logging.debug('-f argument was passed')
     logging.debug("Dumping the info of this machine's files...Hold your butcheeks")
@@ -92,7 +98,7 @@ if args.f:
     else:
         log_files(files)
 
-# MARK:- --fil args
+# NOTE: - --fil args
 if args.fil:
     logging.debug('--fil argument was passed')
     logging.debug('Dumping the info of %s' % args.fil)
@@ -102,8 +108,8 @@ if args.fil:
     else:
         log_file(file)
         
-
-# MARK:- -t args CHECKED
+# SECTION -t and --typ
+# NOTE: - -t args
 if args.t:
     logging.debug('-t argument was passed')
     logging.debug("list all type and the total storage")
@@ -114,8 +120,7 @@ if args.t:
     else:
         log_file_types(file_types)
 
-
-# MARK:- -typ args CHECKED
+# NOTE: - -typ args
 if args.typ:
     logging.debug('--typ argument was passed')
     logging.debug("list all type and the total storage")

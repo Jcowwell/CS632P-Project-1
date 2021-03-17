@@ -1,49 +1,65 @@
-from os import listdir, walk, path, scandir
-from drive_dump import get_disk_info  
-from helper import format_size
+# NOTE: - To Handle Drive Info Logic For -f and --fld arguments
 import logging
-from constants import *
+from os import walk, path
+from helper import get_file_size
+from drive_dump import get_disk_info  
 
 
+# NOTE: - LOG
 logging.debug("Logging in folder_dump.py")
 
-# Return a tuple (dirname,num_of_files)
+# SECTION: - Logic Functions
+
+# NOTE: - Returns a tuple of a foldler's file count and size in the following stucture: (folder,num_of_files,size)
 def get_folder_info(folder):
     files = 0
-    total_size = 0
-    try:
-        for dirpath, dirnames, filenames in walk(folder):
-            for f in filenames:
-                fp = path.join(dirpath, f)
-                # skip if it is symbolic link
-                if not path.islink(fp):
+    size = 0
+    for pathnames, _, filenames in walk(folder):
+        try:
+            for file in filenames:
+                filepath = path.join(pathnames, file)
+                # skip if it is symbolic link cause fuck symbolic links
+                if not path.islink(filepath):
                     files += 1
-                    total_size += path.getsize(fp)
-    except PermissionError:
-        logging.error("Does not have permission to access %s" % folder)
-    except FileNotFoundError:
-        logging.warning('%s folder not found' % folder)
-    except OSError:
-        logging.warning('%s folder is waaay too deep in the OS System. I do not think we should be here...' % folder)
-    
-    return (folder,files,total_size)
+                    size += get_file_size(filepath)
+        except PermissionError:
+            logging.error("Does not have permission to access %s" % file)
+            continue
+        except FileNotFoundError:
+            logging.warning('%s folder not found' % file)
+            continue
+        except OSError:
+            logging.warning('%s folder is waaay too deep in the OS System. I do not think we should be here...' % file)
+            continue
 
-# Should return a lists of tuples (dirname, # of files, total_size)
+    return (folder,files,size)
+
+# NOTE: - Returns a lists of tuples of a foldler's file count and size in the following stucture: (folder,num_of_files,size) | None
 def get_folder_data(drive):
     folders = []
     try:
         for pathnames, dirnames, _ in walk(drive):
             for folder in dirnames:
-                folder_path = path.join(pathnames,folder)
-                if not path.islink(folder_path):
-                    folders.append(get_folder_info(folder_path))
+                try:
+                    folder_path = path.join(pathnames,folder)
+                    if not path.islink(folder_path):
+                        folders.append(get_folder_info(folder_path))
+                except PermissionError:
+                    logging.error("Does not have permission to access %s" % folder)
+                    continue
+                except FileNotFoundError:
+                    logging.warning('%s folder not found' % folder)
+                    continue
+                except OSError:
+                    logging.warning('%s folder is waaay too deep in the OS System. I do not think we should be here...' % folder)
+                    continue
             break
+        return folders
     except Exception as e:
         logging.critical("Cannot get count of drive's folder files and folders because: %s" % str(e))
-        return None # empty lists I work out null handling
+    return None 
 
-    return folders
-
+# NOTE: - Returns the sum of all the storage
 def sum_folders(folders):
     sum = 0
     for folder in folders:
@@ -51,46 +67,37 @@ def sum_folders(folders):
         sum += size
     return sum
 
-# returns a tuple ((dirname, num_of_files,total_size), sum_of_all_folder_size)
+# SECTION: - Driver Functions
 
-# -l master method
-    # Checking if valid path if not return none
-    # if valid get info in a try catch
-    # if an excpetion occurs return none
+# NOTE: - Driver Function inovked by -l args that returns info of all of a drives' folders. Returns a lists of tuples in the following stucture: ((folder,num_of_files,size),sum_storage) | None
 def dump_folders(drive):
+    # Checking if is a valid drive/mount for cross-platform
     if path.ismount(drive):
-        #drive_name = path.basename(path.dirname(drive))
         try:
-            
-            folders = get_folder_data(drive)
+            folders = get_folder_data(drive) # (folder,num_of_files,size) | None
             if folders is None:
                 logging.critical('The program was unable to get folders and number of directories')
-                return None
             else:
-                return (folders, sum_folders(folders))
+                return (folders, sum_folders(folders)) 
         except Exception as e:
-            logging.critical(INDIE_CRITICAL)
-            return None
+            logging.critical("Cannot get %s drive's folder info due to: %s" % (drive, str(e)))
     else:
-        return None
+         logging.warning("%s is not a valid drive", drive)
+    return None
 
-
-# --fld master method
-    # returns ((dirname, num_of_files),(allocated, used, free))
+# NOTE: - Driver Function inovked by -fld args that returns info of a folder. Returns a tuple in the following stucture: ((folder,num_of_files,size),sum_storage) | None
 def dump_folder(folder):
+    # Checking if is a valid folder for cross-platform
     if path.isdir(folder):
         try:
-            
-            get_folder =  get_folder_info(folder)
-            get_folder += (get_disk_info(folder),)
+            get_folder =  get_folder_info(folder) # (folder,num_of_files,size)
+            get_folder += (get_disk_info(folder),) # (folder,num_of_files,size, sum_storage)
             return get_folder
-            
-
-        except Exception:
-            logging.critical(INDIE_CRITICAL)
-            return None
+        except Exception as e: 
+            logging.critical("Cannot get %s folder info due to: %s" % (folder, str(e)))
     else:
-        return None
+        logging.warning("%s is not a valid folder", folder)
+    return None
 
 
 
