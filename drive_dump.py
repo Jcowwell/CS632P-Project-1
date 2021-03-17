@@ -9,7 +9,7 @@ import ctypes
 
 logging.debug('Logging in drive_dump.py')
 
-drives = []
+
 system = platform.system()
 
 # return list of tuples mapping drive letters to drive types
@@ -32,7 +32,7 @@ def get_system_drives():
         drive_info = get_drive_info()
     except Exception:
         logging.critical("Cannot get system's drives")
-        return []
+        return None
     return [drive_letter for drive_letter, drive_type in drive_info if drive_type == DRIVE_FIXED]
 
 # returns a tuple of a disk's total files and folders count.
@@ -45,14 +45,15 @@ def get_folder_and_files_total(directory):
             folders += len(dirnames)
     except Exception:
         logging.critical("Cannot get count of drive's files and folders")
-        return (-1,-1) # 0 until I work out null handling
+        return None, None
     if files < 0:
         logging.error("File count less than 0")
+        return None, None
     if folders < 0:
          logging.error("Folder count less than 0")
+         return None, None
 
     # logging.debug('{:,} files, {:,} folders'.format(files, folders))
-
     return files, folders
 
 # Returns a tuple of a disk's total, used, and free space.
@@ -61,51 +62,69 @@ def get_disk_info(drive):
         total, used, free = shutil.disk_usage(drive)
     except Exception:
         logging.critical("Cannot get drive's storage info")
-        return -1, -1, -1
+        return None, None, None
     try:
         total = format_size(total)
         used = format_size(used)
         free = format_size(free)
+        return total, used, free
     except Exception:
         logging.error(COMP_ERROR)
-        return -1, -1, -1
-    return total, used, free
+    return None, None, None
+
+def macos_dump():
+    logging.debug(MACOS_DETECTED)
+    drive_info = []
+    try: 
+        for drive in listdir('/Volumes'):
+            logging.debug("Beginning Info Dumping of: %s" % drive)
+            drive_info.append((drive, get_folder_and_files_total('/Volumes/' + drive), get_disk_info('/Volumes/' + drive)))
+        return drive_info
+    except Exception:
+        logging.critical(MACOS_CRITICAL)
+    return None
+
+def linux_dump():
+    logging.debug(LINUX_DETECTED)
+    return None
+
+def windows_dump():
+    logging.debug(WINDOWS_DETECTED)
+    drive_info = []
+    try:
+        drives = get_system_drives()
+        if drives is None:
+            logging.critical(WINDOWS_CRITICAL)
+            return None
+        else:
+            for drive in drives:
+                logging.debug("Beginning Info Dumping of: %s" % drive)
+                drive_info.append((drive, get_folder_and_files_total(drive), get_disk_info(drive)))
+            return drive_info
+    except Exception:
+        logging.critical(WINDOWS_CRITICAL)
+    return None
 
 # Master Function that returns the info of all of a system's drives
 # For MacOS, the function reads all drives in /Volumes.
 # For Windows, the function get's all detected Fixed Media Drives (fuck Network Drives) 
 def dump_drives():
-    drive_info = []
     if MAC_OS in system:
-        logging.debug(MACOS_DETECTED)
-        try: 
-            for drive in listdir('/Volumes'):
-                logging.debug("Beginning Info Dumping of: %s" % drive)
-                drive_info.append((drive, get_folder_and_files_total('/Volumes/' + drive), get_disk_info('/Volumes/' + drive)))
-            return drive_info
-        except Exception:
-            logging.critical(MACOS_CRITICAL)
-            return []
+        return macos_dump()
     elif LINUX in system:
-        logging.debug(LINUX_DETECTED)
-        return []
+        return linux_dump()
     elif WINDOWS in system:
-        logging.debug(WINDOWS_DETECTED)
-        try:
-            for drive in get_system_drives():
-                logging.debug("Beginning Info Dumping of: %s" % drive)
-                drive_info.append((drive, get_folder_and_files_total(drive), get_disk_info(drive)))
-            return drive_info
-        except Exception:
-            logging.critical(WINDOWS_CRITICAL)
-            return []
+        return windows_dump()
+    else:
+        logging.critical(INDIE_CRITICAL)
+    return None
 
 # Co-Master Function that returns the info of a inputted drive.
 # Platform Agnostic
 def dump_drive(drive_path):
     try:
         if path.ismount(drive_path):
-            drive_name = path.basename(path.dirname(drive_path)) # Because I'm a lazy bum who doesn;t wnat to right a slash preflix stripper function. 
+            drive_name = path.basename(path.dirname(drive_path)) # Because I'm a lazy bum who doesn't wnat to right a slash preflix stripper function. 
             return (drive_name, get_folder_and_files_total(drive_path), get_disk_info(drive_path))
         else:
             logging.warning('%s is not a valid path' % drive_path)

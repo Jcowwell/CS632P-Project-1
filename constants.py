@@ -50,3 +50,6 @@ F = '-f'
 FIL = '--fil'
 T = '-t'
 TYP = '--typ'
+
+# For Type Defaults
+ALL = "ALL"
