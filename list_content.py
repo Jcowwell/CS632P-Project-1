@@ -104,7 +104,14 @@ if args.fil:
 # MARK:- -t args
 if args.t:
     logging.debug('-t argument was passed')
+    logging.debug("list all type and the total storage")
+    file, size = get_types_storage()
+    log_fileTypeSize_info(file, size)
+
 
 # MARK:- -typ args
 if args.typ:
     logging.debug('--typ argument was passed')
+    logging.debug("list all type and the total storage")
+    file, size = get_types_storage()
+    log_fileTypeSize_info(file, size)
