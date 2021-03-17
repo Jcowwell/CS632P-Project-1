@@ -10,7 +10,8 @@ import argparse
 from drive_dump import dump_drives, dump_drive
 from folder_dump import dump_folder, dump_folders
 from file_dump import dump_files, dump_file
-from info_logger import log_drives, log_drive, log_folders, log_folder, log_files, log_file
+from file_type_dump import dump_file_types, dump_file_type
+from info_logger import log_drives, log_drive, log_folders, log_folder, log_files, log_file, log_file_types
 
 
 # MARK:- Set up Argparse paramaeters
@@ -29,7 +30,8 @@ parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
 # args = parser.parse_args(args=['--fld', ''])
-args = parser.parse_args(args=['--fld', '/Volumes/Macintosh HD/Application'])
+args = parser.parse_args(args=['--typ', '.txt'])
+# txt: 8621
 
 # MARK:- Begin Args Parameters Handeling
 logging.debug("Beginning Args Handeling...")
@@ -101,10 +103,24 @@ if args.fil:
         log_file(file)
         
 
-# MARK:- -t args
+# MARK:- -t args CHECKED
 if args.t:
     logging.debug('-t argument was passed')
+    logging.debug("list all type and the total storage")
+    file_types = dump_file_types()
+    if file_types is None:
+        logging.critical('The program was unable to obtain file types info from this machine')
+        logging.error("Could not dump this machine's file types info") 
+    else:
+        log_file_types(file_types)
 
-# MARK:- -typ args
+
+# MARK:- -typ args CHECKED
 if args.typ:
     logging.debug('--typ argument was passed')
+    logging.debug("list all type and the total storage")
+    file_types = dump_file_type(args.typ)
+    if file_types is None:
+        logging.critical('The program was unable to obtain info from %s' % args.fil) 
+    else:
+        log_file_types(file_types)

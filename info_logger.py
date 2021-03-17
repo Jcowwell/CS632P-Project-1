@@ -69,6 +69,26 @@ def log_files(files):
     for file in files:
         log_file(file)
 
+def log_file_type_info(file_type, num_of_files, total_storage):
+    logging.debug('Logging File Type Dump')
+    logging.info('File Type: %s' % file_type)
+    logging.info('Total # of files: %s' % num_of_files)
+    logging.info("Total storage: %s" % format_size(total_storage))
+
+# Tuples of Dictonary
+def log_file_type(file_type):
+    print(file_type)
+    type, size = file_type
+    for _type in type.keys():
+        log_file_type_info(_type, type[_type], size[_type])
+
+# Lists of Tuples of Dictonary
+def log_file_types(file_types):
+    for file_type in file_types:
+        log_file_type(file_type)
+    
+
+
 
 
     
