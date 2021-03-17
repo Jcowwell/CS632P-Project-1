@@ -18,21 +18,21 @@ from info_logger import log_drives, log_drive, log_folders, log_folder, log_file
 # SECTION ARGS Initilization
 # NOTE: - Set up Argparse paramaeters
 parser = argparse.ArgumentParser()
-parser.add_argument(D, help='list all the drives of the machine with additional info')
+parser.add_argument(D, help='list all the drives of the machine with additional info', action='store_true')
 parser.add_argument(DRV, help='list additional info of single drive')
 
 parser.add_argument(L, help='list all the folders of the machine with additional info:')
 parser.add_argument(FLD, help='list additional info of single folder')
 
-parser.add_argument(F, help='list all the files of the machine with additional info')
+parser.add_argument(F, help='list all the files of the machine with additional info', action='store_true')
 parser.add_argument(FIL, help='list additional info of single file')
 
-parser.add_argument(T, help='list all the types of files of the machine with additional info')
+parser.add_argument(T, help='list all the types of files of the machine with additional info', action='store_true')
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
 #NOTE: -  In-Code arg passing (For Testing)
-args = parser.parse_args(args=['-t', 'T'])
+args = parser.parse_args(args=['-t'])
 
 # SECTION ARGS Handeling
 # NOTE: - Beginning Args Parameters Handeling
