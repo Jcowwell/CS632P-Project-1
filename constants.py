@@ -1,3 +1,5 @@
+from logging import Formatter
+
 # PURP: - TO PROVIDE A CENTRAL FILE FOR STRINGS REPEATEDLY USED THROUGHOUT THE PROJECT. 
 
 # MARK: - Logger File Basic Config constants
@@ -42,6 +44,8 @@ WINDOWS_CRITICAL = 'Can not read the Windows structure'
 INDIE_CRITICAL = 'Can not read the OS structure'
 
 # arg constants
+V = '-v'
+Q = '-q'
 D = '-d'
 DRV = '--drv'
 L = '-l'

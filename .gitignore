@@ -5,3 +5,6 @@ constants.pyc
 drive_dump.pyc
 .DS_Store
 helper.pyc
+test.log
+test.py
+.gitignore

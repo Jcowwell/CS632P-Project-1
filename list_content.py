@@ -2,7 +2,7 @@
 # REVIEW: - Check if Windows Systems are 100% compatible
 
 import logging
-from constants import D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
+from constants import V, Q, D, DRV, L, FLD, F, FIL, T, TYP, LOG_FORMAT, LOG_DATE_FORMAT
 
 # NOTE: - Logger Initilized
 logging.basicConfig(filename='dump.log', level=logging.DEBUG, format=LOG_FORMAT, datefmt=LOG_DATE_FORMAT)
@@ -15,9 +15,12 @@ from file_dump import dump_files, dump_file
 from file_type_dump import dump_file_types, dump_file_type
 from info_logger import log_drives, log_drive, log_folders, log_folder, log_files, log_file, log_file_types
 
-# SECTION ARGS Initilization
+# SECTION ARGS In itilization
 # NOTE: - Set up Argparse paramaeters
 parser = argparse.ArgumentParser()
+parser.add_argument(V, help='Prints Output to Terminal', action='store_true')
+parser.add_argument(Q, help='Only Logs Output to Dump.log file', action='store_true')
+
 parser.add_argument(D, help='list all the drives of the machine with additional info', action='store_true')
 parser.add_argument(DRV, help='list additional info of single drive')
 
@@ -31,8 +34,9 @@ parser.add_argument(T, help='list all the types of files of the machine with add
 parser.add_argument(TYP, help='list additional info of type of single file')
 logging.debug("Args Added")
 
-#NOTE: -  In-Code arg passing (For Testing)
-args = parser.parse_args(args=['-t'])
+#NOTE: -  In-Code arg passing (For Testing & Presentation)
+args = parser.parse_args(['-v'])
+
 
 # SECTION ARGS Handeling
 # NOTE: - Beginning Args Parameters Handeling
@@ -51,6 +55,9 @@ if args.d:
     else: 
         log_drives(drives)
        
+
+# NOTE: - Adopted from StackOverFlow Post: https://stackoverflow.com/questions/5980042/how-to-implement-the-verbose-or-v-option-into-a-script
+verboseprint = print if args.v else lambda *a, **k: None
 
 # NOTE: - -drv args
 if args.drv:
